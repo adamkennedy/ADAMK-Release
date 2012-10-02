@@ -1,9 +1,5 @@
-use strict;
-use inc::Module::Install;
+use inc::Module::Install::DSL 1.06;
 
-name          'ADAMK-Release';
-all_from      'lib/ADAMK/Release.pm';
-requires      'Params::Util' => '0.20';
-test_requires 'Test::More'   => '0.42';
-
-WriteAll;
+all_from      lib/ADAMK/Release.pm
+requires_from lib/ADAMK/Release.pm
+test_requires Test::More 0.42

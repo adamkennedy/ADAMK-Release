@@ -1,54 +1,34 @@
 package ADAMK::Release;
 
-=pod
-
-=head1 NAME
-
-ADAMK::Release - The author of the module is an idiot
-
-=head1 SYNOPSIS
-
-  The author is an idiot who forgot to write the synopsis
-
-=head1 DESCRIPTION
-
-The author is an idiot who forgot to write the description
-
-=head1 METHODS
-
-=cut
-
-use 5.005;
+use 5.10.0;
 use strict;
+use warnings;
+use Params::Util    ();
+use GitHub::Extract ();
 
-use vars qw{$VERSION};
-BEGIN {
-	$VERSION = '0.01';
-}
+our $VERSION = '0.01';
+
+use Object::Tiny 1.01 qw{
+	github
+};
 
 
 
 
 
-#####################################################################
-# Constructor and Accessors
-
-=pod
-
-=head2 new
-
-The author is an idiot that forgot to write the docs for the new method
-
-=cut
+######################################################################
+# Constructor
 
 sub new {
-	my $class = shift;
+	my $self = shift->SUPER::new(@_);
 
-	# Create the object
-	my $self = bless { @_ }, $class;
-
-	# Check params
-	die "CODE INCOMPLETE";
+	# Inflate the github object if needed
+	if ( Params::Util::_HASH($self->github) ) {
+		$self->{github} = GitHub::Extract->new( %{$self->github} );
+	}
+	unless ( Params::Util::_INSTANCE($self->github, 'GitHub::Extract')) {
+		die "Missing or invalid GitHub specification";
+	}
 
 	return $self;
 }
@@ -57,30 +37,13 @@ sub new {
 
 
 
-#####################################################################
+######################################################################
 # Main Methods
 
+sub run {
+	my $self = shift;
+
+	
+}
+
 1;
-
-=pod
-
-=head1 SUPPORT
-
-No support is available for this module
-
-=head1 AUTHOR
-
-Adam Kennedy E<lt>adamk@cpan.orgE<gt>
-
-=head1 COPYRIGHT
-
-Copyright 2007 Adam Kennedy.
-
-This program is free software; you can redistribute
-it and/or modify it under the same terms as Perl itself.
-
-The full text of the license can be found in the
-LICENSE file included with this module.
-
-=cut
-

@@ -1,14 +1,8 @@
 #!/usr/bin/perl
 
+use 5.10.0;
 use strict;
-BEGIN {
-	$|  = 1;
-	$^W = 1;
-}
+use warnings;
+use Test::More tests => 1;
 
-use Test::More tests => 2;
-
-ok( $] <= 5.005, 'Perl version is new enough' );
-
-use_ok( 'ADAMK::Release' );
-
+use_ok('ADAMK::Release');
