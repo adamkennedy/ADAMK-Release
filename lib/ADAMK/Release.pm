@@ -316,13 +316,6 @@ sub build_make {
 	$self->build_makefile;
 	$self->build_makefile_manifest;
 
-	# Create the MANIFEST
-	$self->shell(
-		$self->bin_make,
-		"manifest",
-		"Error while creating the MANIFEST",
-	);
-
 	unless ( $self->no_test ) {
 		# Test the distribution normally
 		$self->shell(
@@ -387,8 +380,20 @@ sub build_make {
 				"disttest",
 				'disttest failed',
 			);
+
+			# Clean up the leftover root files
+			$self->sudo(
+				$self->bin_make,
+				"realclean",
+				'sudo make clean failed',
+			);
+			$self->remove( $self->dist_manifest );
 		}
 	}
+
+	# Create the Makefile and MANIFEST
+	$self->build_makefile;
+	$self->build_makefile_manifest;
 
 	# Build the tardist
 	$self->shell(
