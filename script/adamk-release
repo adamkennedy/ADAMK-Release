@@ -16,6 +16,7 @@ our $VERSION = '0.01';
 # Configuration
 
 my $VERBOSE      = '';
+my $RELEASE      = '';
 my $NO_CHANGES   = '';
 my $NO_COPYRIGHT = '';
 my $NO_RT        = '';
@@ -24,6 +25,7 @@ my $NO_TEST      = '';
 # Set the settings and arg the arguments
 Getopt::Long::GetOptions(
 	verbose       => \$VERBOSE,
+	release       => \$RELEASE,
 	nochanges     => \$NO_CHANGES,
 	nocopyright   => \$NO_COPYRIGHT,
 	nort          => \$NO_RT,
@@ -51,6 +53,7 @@ my $release = ADAMK::Release->new(
 		username   => 'adamkennedy',
 		repository => $repository,
 	},
+	release      => $RELEASE,
 	no_changes   => $NO_CHANGES,
 	no_copyright => $NO_COPYRIGHT,
 	no_rt        => $NO_RT,

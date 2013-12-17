@@ -4,6 +4,7 @@ use 5.10.0;
 use strict;
 use warnings;
 use Carp                          ();
+use CPAN::Uploader       0.103003 ();
 use Devel::PPPort            3.21 ();
 use File::Spec::Functions    0.80 ':ALL';
 use File::Slurp           9999.19 ();
@@ -11,9 +12,10 @@ use File::Find::Rule         0.32 ();
 use File::Flat               1.04 ();
 use File::ShareDir           1.03 ();
 use File::LocalizeNewlines   1.12 ();
-use Params::Util             1.00 ':ALL';
 use GitHub::Extract          0.02 ();
+use IO::Prompt::Tiny        0.002 ();
 use Module::Extract::VERSION 1.01 ();
+use Params::Util             1.00 ':ALL';
 use YAML::Tiny               1.51 ();
 
 our $VERSION = '0.01';
@@ -23,14 +25,15 @@ use constant TOOLS => qw{
 	chmod
 	make
 	touch
-    sudo
-    bash
+	sudo
+	bash
 };
 
 use Object::Tiny 1.01 qw{
 	module
 	github
 	verbose
+	release
 	no_rt
 	no_changes
 	no_copyright
@@ -60,6 +63,9 @@ sub new {
 	unless ( Params::Util::_INSTANCE($self->github, 'GitHub::Extract')) {
 		$self->error("Missing or invalid GitHub specification");
 	}
+
+	# Release options
+	$self->{release} = !!$self->{release};
 
 	# Find all of the command line tools
 	foreach my $tool ( TOOLS ) {
@@ -96,6 +102,9 @@ sub run {
 	$self->validate;
 	$self->assemble;
 	$self->build;
+
+	# Release the distribution
+	$self->upload if $self->release;
 
 	return;
 }
@@ -298,8 +307,8 @@ sub build {
 		$self->error("Module does not have a Makefile.PL or Build.PL");
 	}
 
-	# Confirm the build worked
-	unless ( -e $self->dist_tardist ) {
+	# Double check that the build produced a tarball where we expect it to be
+	unless ( -f $self->dist_tardist ) {
 		$self->error(
 			"Failed to create tardist at '%s'",
 			$self->dist_tardist,
@@ -476,6 +485,27 @@ sub build_perl {
 	);
 
 	return;
+}
+
+sub upload {
+	my $self = shift;
+
+	my $pauseid = IO::Prompt::Tiny::prompt("PAUSEID: ", undef);
+	unless (_STRING($pauseid) and $pauseid =~ /^[A-Z]{3,}$/) {
+		$self->error("Missing or invalid PAUSEID");
+	}
+
+	my $password = IO::Prompt::Tiny::prompt("Password: ", undef);
+	unless (_STRING($password) and $password =~ /^\S{5,}$/) {
+		$self->error("Missing or invalid CPAN password");
+	}
+
+	# Execute the upload to CPAN
+	CPAN::Uploader->upload_file( $self->dist_tardist, {
+		debug    => 1,
+		username => $pauseid,
+		password => $password,
+	});
 }
 
 
