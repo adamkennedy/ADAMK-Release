@@ -810,7 +810,7 @@ sub env {
 
 sub error {
 	my $self    = shift;
-	my $message = sprintf(@_);
+	my $message = sprintf(shift, @_);
 	Carp::croak($message);
 }
 
