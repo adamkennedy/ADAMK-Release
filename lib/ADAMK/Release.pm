@@ -503,7 +503,6 @@ sub upload {
 
 	# Execute the upload to CPAN
 	CPAN::Uploader->upload_file( $self->dist_tardist, {
-		debug    => 1,
 		user     => $pauseid,
 		password => $password,
 	});
