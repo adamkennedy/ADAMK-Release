@@ -14,6 +14,7 @@ use File::LocalizeNewlines   1.12 ();
 use Params::Util             1.00 ':ALL';
 use GitHub::Extract          0.02 ();
 use Module::Extract::VERSION 1.01 ();
+use YAML::Tiny               1.51 ();
 
 our $VERSION = '0.01';
 
