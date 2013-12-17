@@ -374,7 +374,7 @@ sub build_make {
 				"realclean",
 				'sudo make clean failed',
 			);
-			$self->remove( "MANIFEST" );
+			$self->remove( $self->dist_manifest );
 
 			# Rebuild from scratch again
 			$self->build_makefile;
