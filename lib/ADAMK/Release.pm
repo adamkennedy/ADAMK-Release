@@ -421,7 +421,7 @@ sub build_makefile {
 		$save = 1;
 	}
 	if ( $save ) {
-		YAML::Tiny->write( $self->dist_meta_yml );
+		$meta->write( $self->dist_meta_yml );
 	}
 
 	return;
