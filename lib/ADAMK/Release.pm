@@ -361,15 +361,8 @@ sub build_make {
 				'disttest failed',
 			);
 
-			# Clean up the leftover root files
-			$self->sudo(
-				$self->bin_make,
-				"realclean",
-				'sudo make clean failed',
-			);
-			$self->remove( $self->dist_manifest );
-
-			# Rebuild from scratch again
+			# Clean up leftover root files and rebuild from scratch
+			$self->build_realclean;
 			$self->build_makefile;
 			$self->build_makefile_manifest;
 
@@ -381,13 +374,8 @@ sub build_make {
 				'disttest failed',
 			);
 
-			# Clean up the leftover root files
-			$self->sudo(
-				$self->bin_make,
-				"realclean",
-				'sudo make clean failed',
-			);
-			$self->remove( $self->dist_manifest );
+			# Clean up the leftover root files again
+			$self->build_realclean;
 		}
 	}
 
@@ -443,6 +431,18 @@ sub build_makefile_manifest {
 		"manifest",
 		"Error while creating the MANIFEST",
 	);	
+}
+
+sub build_realclean {
+	my $self = shift;
+
+	# Clean up the distribution (always with root)
+	$self->sudo(
+		$self->bin_make,
+		"realclean",
+		'sudo make clean failed',
+	);
+	$self->remove( $self->dist_manifest );
 }
 
 sub build_perl {
