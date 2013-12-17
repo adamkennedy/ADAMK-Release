@@ -723,7 +723,7 @@ sub remove {
 	my $self = shift;
 	my $path = shift;
 	if ( -e $path ) {
-		sudo( "rm -rf $path" );
+		$self->sudo( "rm -rf $path" );
 		if ( -e $path ) {
 			$self->error("Failed to remove '$path'");
 		}
