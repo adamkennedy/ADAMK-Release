@@ -35,7 +35,7 @@ unless ( @ARGV ) {
 	die "Missing or invalid distribution name";
 }
 my $module     = shift @ARGV;
-my $repository = lc $module;
+my $repository = $module;
 $repository =~ s/::/-/g;
 
 
