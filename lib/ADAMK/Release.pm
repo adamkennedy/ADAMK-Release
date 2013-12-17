@@ -23,6 +23,8 @@ use constant TOOLS => qw{
 	chmod
 	make
 	touch
+    sudo
+    bash
 };
 
 use Object::Tiny 1.01 qw{
