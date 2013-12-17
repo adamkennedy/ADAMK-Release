@@ -13,9 +13,10 @@ use File::Flat               1.04 ();
 use File::ShareDir           1.03 ();
 use File::LocalizeNewlines   1.12 ();
 use GitHub::Extract          0.02 ();
-use IO::Prompter         0.004010 ();
+use IO::Prompt::Tiny        0.002 ();
 use Module::Extract::VERSION 1.01 ();
 use Params::Util             1.00 ':ALL';
+use Term::ReadKey            2.14 ();
 use YAML::Tiny               1.51 ();
 
 our $VERSION = '0.01';
@@ -490,12 +491,12 @@ sub build_perl {
 sub upload {
 	my $self = shift;
 
-	my $pauseid = IO::Prompter::prompt("PAUSEID:");
+	my $pauseid = $self->prompt("PAUSEID:");
 	unless (_STRING($pauseid) and $pauseid =~ /^[A-Z]{3,}$/) {
 		$self->error("Missing or invalid PAUSEID");
 	}
 
-	my $password = IO::Prompter::prompt("Password:", -echo => '*');
+	my $password = $self->password("Password:");
 	unless (_STRING($password) and $password =~ /^\S{5,}$/) {
 		$self->error("Missing or invalid CPAN password");
 	}
@@ -811,6 +812,22 @@ sub error {
 	my $self    = shift;
 	my $message = sprintf(@_);
 	Carp::croak($message);
+}
+
+sub prompt {
+	my $self = shift;
+	return IO::Prompt::Tiny::prompt(@_);
+}
+
+sub password {
+	my $self     = shift;
+	my $password = undef;
+	eval {
+		Term::ReadKey::ReadMode('noecho');
+		$password = <STDIN>;
+	};
+	Term::ReadKey::ReadMode(0);
+	return $password;
 }
 
 1;
