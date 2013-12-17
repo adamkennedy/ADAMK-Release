@@ -140,7 +140,7 @@ sub assemble {
 
 	# Copy in author tests as needed
 	unless ( -f $self->dist_99_author ) {
-		foreach my $xt ( qw{ meta.t pod.t pmv.t } ) {
+		foreach my $xt ( qw{ pod.t pmv.t } ) {
 			next if -f catfile( $self->dist_xt, $xt );
 			$self->copy(
 				catfile( $self->shared_dir, $xt ),
