@@ -253,7 +253,7 @@ sub assemble {
 		# Merge the module to a single string
 		my $merged = join "\n", @lines;
 		unless ( $self->no_rt ) {
-			my $dist_name = $self->dist_name;
+			my $dist_name = $self->dist;
 			unless ( $merged =~ /L\<http\:\/\/rt\.cpan\.org\/.+?=([\w-]+)\>/ ) {
 				$self->error("Failed to find a link to the public RT queue");
 			}
