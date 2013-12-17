@@ -13,7 +13,7 @@ use File::Flat               1.04 ();
 use File::ShareDir           1.03 ();
 use File::LocalizeNewlines   1.12 ();
 use GitHub::Extract          0.02 ();
-use IO::Prompt::Tiny        0.002 ();
+use IO::Prompter         0.004010 ();
 use Module::Extract::VERSION 1.01 ();
 use Params::Util             1.00 ':ALL';
 use YAML::Tiny               1.51 ();
@@ -490,12 +490,12 @@ sub build_perl {
 sub upload {
 	my $self = shift;
 
-	my $pauseid = IO::Prompt::Tiny::prompt("PAUSEID: ", undef);
+	my $pauseid = IO::Prompter::prompt("PAUSEID:");
 	unless (_STRING($pauseid) and $pauseid =~ /^[A-Z]{3,}$/) {
 		$self->error("Missing or invalid PAUSEID");
 	}
 
-	my $password = IO::Prompt::Tiny::prompt("Password: ", undef);
+	my $password = IO::Prompter::prompt("Password:", -echo => '*');
 	unless (_STRING($password) and $password =~ /^\S{5,}$/) {
 		$self->error("Missing or invalid CPAN password");
 	}
@@ -503,7 +503,7 @@ sub upload {
 	# Execute the upload to CPAN
 	CPAN::Uploader->upload_file( $self->dist_tardist, {
 		debug    => 1,
-		username => $pauseid,
+		user     => $pauseid,
 		password => $password,
 	});
 }
