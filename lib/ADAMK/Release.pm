@@ -830,7 +830,8 @@ sub password {
 		$password = <STDIN>;
 	};
 	Term::ReadKey::ReadMode(0);
-	return chomp($password) if defined $password;
+	return undef if not defined $password;
+	chomp($password);
 	return $password;
 }
 
