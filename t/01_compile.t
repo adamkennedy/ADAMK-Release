@@ -7,4 +7,5 @@ use Test::More tests => 2;
 use Test::Script;
 
 use_ok('ADAMK::Release');
+
 script_compiles('script/adamk-release');

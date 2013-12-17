@@ -19,7 +19,7 @@ use Params::Util             1.00 ':ALL';
 use Term::ReadKey            2.14 ();
 use YAML::Tiny               1.51 ();
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 use constant TOOLS => qw{
 	cat
