@@ -155,9 +155,10 @@ sub assemble {
 	# Create the README file
 	unless ( -f $self->dist_readme ) {
 		my $dist_readme = $self->dist_readme;
+		my $module_pod = -f $self->module_pod ? $self->module_pod : $self->module_pm;
 		$self->shell(
 			$self->bin_cat,
-			$self->module_pod,
+			$module_pod,
 			"| pod2text >",
 			$dist_readme,
 			"Error while generating README file '$dist_readme'",
