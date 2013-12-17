@@ -822,11 +822,15 @@ sub prompt {
 sub password {
 	my $self     = shift;
 	my $password = undef;
+	if ( defined $_[0] ) {
+		print "$_[0] ";
+	}
 	eval {
 		Term::ReadKey::ReadMode('noecho');
 		$password = <STDIN>;
 	};
 	Term::ReadKey::ReadMode(0);
+	return chomp($password) if defined $password;
 	return $password;
 }
 
