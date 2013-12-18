@@ -19,7 +19,7 @@ use Params::Util             1.00 ':ALL';
 use Term::ReadKey            2.14 ();
 use YAML::Tiny               1.51 ();
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 use constant TOOLS => qw{
 	cat
@@ -200,7 +200,7 @@ sub assemble {
 		next if $mode == 0644;
 		$self->shell(
 			$self->bin_chmod,
-			'0644',	
+			'0644',
 			$file,
 			"Error setting $file to 0644 permissions",
 		);
@@ -840,7 +840,7 @@ __END__
 
 =head1 NAME
 
-ADAMK::Release - 
+ADAMK::Release - Build and release ADAMK style GitHub distributions
 
 =head1 DESCRIPTION
 
