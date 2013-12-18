@@ -822,7 +822,7 @@ sub password {
 	my $self     = shift;
 	my $password = undef;
 	if ( defined $_[0] ) {
-		print "$_[0] ";
+		print "$_[0]\n";
 	}
 	eval {
 		Term::ReadKey::ReadMode('noecho');
