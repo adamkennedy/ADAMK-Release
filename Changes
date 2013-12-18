@@ -2,6 +2,7 @@ Changes for Perl extension ADAMK-Release
 
 0.03 2013-12-17
 	- Adding an abstract
+	- Adding auto-addition of xt/changes.t
 
 0.02 2013-12-17
 	- Fixing a few small issues

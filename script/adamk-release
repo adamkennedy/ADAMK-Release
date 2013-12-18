@@ -17,6 +17,7 @@ our $VERSION = '0.03';
 
 my $VERBOSE      = '';
 my $RELEASE      = '';
+my $XT_CHANGES   = '';
 my $NO_CHANGES   = '';
 my $NO_COPYRIGHT = '';
 my $NO_RT        = '';
@@ -24,12 +25,13 @@ my $NO_TEST      = '';
 
 # Set the settings and arg the arguments
 Getopt::Long::GetOptions(
-	verbose       => \$VERBOSE,
-	release       => \$RELEASE,
-	nochanges     => \$NO_CHANGES,
-	nocopyright   => \$NO_COPYRIGHT,
-	nort          => \$NO_RT,
-	notest        => \$NO_TEST,
+	verbose     => \$VERBOSE,
+	release     => \$RELEASE,
+	xtchanges   => \$XT_CHANGES,
+	nochanges   => \$NO_CHANGES,
+	nocopyright => \$NO_COPYRIGHT,
+	nort        => \$NO_RT,
+	notest      => \$NO_TEST,
 );
 
 # Get the module name
@@ -54,6 +56,7 @@ my $release = ADAMK::Release->new(
 		repository => $repository,
 	},
 	release      => $RELEASE,
+	xt_changes   => $XT_CHANGES,
 	no_changes   => $NO_CHANGES,
 	no_copyright => $NO_COPYRIGHT,
 	no_rt        => $NO_RT,

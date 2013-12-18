@@ -35,9 +35,10 @@ use Object::Tiny 1.01 qw{
 	github
 	verbose
 	release
-	no_rt
+	xt_changes
 	no_changes
 	no_copyright
+	no_rt
 	no_test
 }, map { "bin_$_" } TOOLS;
 
@@ -153,7 +154,11 @@ sub assemble {
 
 	# Copy in author tests as needed
 	unless ( -f $self->dist_99_author ) {
-		foreach my $xt ( qw{ pod.t pmv.t } ) {
+		my @tests = qw{ pod.t pmv.t };
+		if ( $self->xt_changes ) {
+			push @tests, 'changes.t';
+		}
+		foreach my $xt ( @tests ) {
 			next if -f catfile( $self->dist_xt, $xt );
 			$self->copy(
 				catfile( $self->shared_dir, $xt ),
