@@ -4,6 +4,7 @@ use 5.10.0;
 use strict;
 use warnings;
 use Carp                          ();
+use CPAN::Meta           2.133380 ();
 use CPAN::Uploader       0.103003 ();
 use Devel::PPPort            3.21 ();
 use File::Spec::Functions    0.80 ':ALL';
@@ -142,7 +143,7 @@ sub assemble {
 		$self->copy( $self->shared_manifest_skip => $self->dist_manifest_skip );
 	}
 
-	# Apply a default LICENSE file
+	# Apply a default LICENSE file (assume the Perl license)
 	unless ( -f $self->dist_license ) {
 		$self->copy( $self->shared_license => $self->dist_license );
 	}
@@ -180,9 +181,15 @@ sub assemble {
 		)
 	}
 
+	# Convert META.yml to META.json if one does not exist
+	if ( -f $self->dist_meta_yml and ! -f $self->dist_meta_json ) {
+		my $meta = CPAN::Meta->load_file($self->dist_meta_yml);
+		$meta->save($self->dist_meta_json);
+	}
+
 	# Localise all newlines in text files
 	$self->file_localize->localize( $self->dist_dir );
-	
+
 	# Check for various unsafe things in Makefile.PL
 	if ( $self->makefile_pl ) {
 		if ( $self->makefile_pl =~ /use inc::Module::Install/ ) {
@@ -663,6 +670,10 @@ sub dist_readme {
 
 sub dist_meta_yml {
 	'META.yml';
+}
+
+sub dist_meta_json {
+	'META.json';
 }
 
 sub dist_manifest {
